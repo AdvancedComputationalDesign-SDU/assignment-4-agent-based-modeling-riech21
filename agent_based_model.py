@@ -1,7 +1,7 @@
 """
 Assignment 4: Agent-Based Model for wind simulation
 
-Author: Rie Pilgaard CHristiansen
+Author: Rie Pilgaard Christiansen
 
 Description:
 This script simulates wind particles interacting with a facade in a bounded environment using OOP. 
