@@ -177,26 +177,10 @@ A trigger mechanism is employed to initiate the simulation, allowing for control
 
 ## References
 
-*(List any resources you used or found helpful during the assignment.)*
-
-- **Object-Oriented Programming**
-
-  - [Python Official Documentation](https://docs.python.org/3/tutorial/classes.html)
-  - [Real Python - OOP in Python](https://realpython.com/python3-object-oriented-programming/)
-
-- **Agent-Based Modeling**
-
-  - [Mesa: Agent-Based Modeling in Python](https://mesa.readthedocs.io/en/master/)
-  - [Agent-Based Models in Architecture](https://www.researchgate.net/publication/279218265_Agent-based_models_in_architecture_new_possibilities_of_interscalar_design)
-
-- **Visualization Tools**
-
-  - [Rhino.Python Guides](https://developer.rhino3d.com/guides/rhinopython/)
-  - [matplotlib](https://matplotlib.org/)
-  - [Blender Python API](https://docs.blender.org/api/current/)
-
----
-
-*(Feel free to expand upon these sections to fully capture your work and learning process.)*
+- Agent-based modeling: [Agents in Python](https://agentpy.readthedocs.io/en/latest/overview.html#environments)
+- Grasshopper scripting: [Grasshopper scripting](https://developer.rhino3d.com/guides/scripting/scripting-gh-python/)
+- Object-Oriented Programming: [OOP in Python](https://realpython.com/python3-object-oriented-programming/)
+- Data trees and Python: [Grasshopper data trees and Python](https://developer.rhino3d.com/guides/rhinopython/grasshopper-datatrees-and-python/)
+- Running a simulation: [Model simulation](https://agentpy.readthedocs.io/en/latest/overview.html#running-a-simulation)
 
 ---
