@@ -115,41 +115,56 @@ A trigger mechanism is employed to initiate the simulation, allowing for control
 
 ## Design Variations
 
-*(Include images and descriptions of your generated design variations. For each variation, discuss the parameters or rules changed and the impact on the resulting patterns.)*
+### Circular Facade Surface
 
-### Variation Examples
+1. **Variation 1**
 
-1. **Variation 1: [Name/Description]**
-
-   ![Variation 1](images/variation1.jpg)
+   ![Variation 1](images/Circular100.gif)
 
    - **Parameters Changed**:
-     - interaction_radius: [Value]
-     - alignment_strength: [Value]
-   - **Description**:
-     - Describe how these changes affected agent behaviors and the final pattern.
+     - num_particles: [100]
+     - facade shape: circular
 
-2. **Variation 2: [Name/Description]**
+2. **Variation 2**
 
-   ![Variation 2](images/variation2.jpg)
+   ![Variation 2](images/Circular10.gif)
 
    - **Parameters Changed**:
-     - cohesion_factor: [Value]
-     - separation_distance: [Value]
+     - num_particles: [10]
+     - facade shape: circular
+
+
    - **Description**:
-     - Discuss the observed changes in the model.
+     - The airflow adapts smoothly around the circular shape, showcasing realistic aerodynamics.
+     - Streamlines are consistent, demonstrating minimal turbulence behind the object.
+     - Useful for understanding flow around symmetric, streamlined objects such as cylinders.
+     - Does not simulate flow interaction with sharp corners or complex geometries.
+     - Turbulence effects appear understated, which may not accurately represent high-speed wind conditions.
 
-3. **Variation 3: [Name/Description]**
+### Rectangular Facade Surface
 
-   ![Variation 3](images/variation3.jpg)
+1. **Variation 1**
+
+   ![Variation 3](images/Rectangular100.gif)
 
    - **Parameters Changed**:
-     - randomness: [Value]
-     - environmental_influence: [Value]
-   - **Description**:
-     - Explain how the introduction of randomness or environmental factors impacted the results.
+     - num_particles: [100]
+     - facade shape: rectangular
 
-*(Add more variations as needed.)*
+2. **Variation 2**
+
+   ![Variation 4](images/Rectangular10.gif)
+
+   - **Parameters Changed**:
+     - num_particles: [10]
+     - facade shape: rectangular
+
+    
+   - **Description**:
+     - Clearly demonstrates how sharp edges influence airflow, creating distinct separation points.
+     - More realistic for modeling flow around buildings or sharp-edged objects.
+     - Turbulence is localized and might lack details about how eddies develop downstream
+     - The airflow around the facade exhibits asymmetrical behavior.
 
 ---
 
