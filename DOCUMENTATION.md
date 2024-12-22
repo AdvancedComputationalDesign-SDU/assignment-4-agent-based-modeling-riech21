@@ -155,18 +155,23 @@ A trigger mechanism is employed to initiate the simulation, allowing for control
 
 ## Challenges and Solutions
 
-*(Discuss any challenges you faced during the assignment and how you overcame them.)*
+- **Challenge**: Balancing Avoidance and Attraction. 
+  - **Solution**: I fine-tuned the attraction and repulsion forces to balance navigation around the facade while progressing toward the target. A blended force algorithm based on distance and velocity allowed particles to dynamically adapt without getting stuck.
 
-### Examples:
+- **Challenge**: Agents getting stuck or clustering unnaturally.
+  - **Solution**: I implemented a mechanism that modified particle velocities when they were too close to the facade, allowing them to move away more effectively. Additionally, I introduced a random perturbation factor in their movement to encourage exploration and reduce clustering.
 
-- **Challenge 1**: Managing large numbers of agents efficiently.
-  - **Solution**: Implemented spatial partitioning to reduce computation time.
+- **Challenge**: Visualizing the simulation in real-time.
+  - **Solution**: I used spatial partitioning to reduce calculations for particle-facade interactions, enhancing simulation responsiveness. Optimizing the rendering pipeline ensured only essential elements were drawn, improving real-time visualization.
 
-- **Challenge 2**: Agents getting stuck or clustering unnaturally.
-  - **Solution**: Adjusted interaction rules and added collision avoidance behaviors.
+- **Challenge**: Handling Edge Cases in Particle Movement.
+  - **Solution**: I added boundary clamping logic in the `clamp_particle_position()` method to keep particles within bounds, ensuring smoother movement and reducing erratic behavior.
 
-- **Challenge 3**: Visualizing the simulation in real-time.
-  - **Solution**: Used efficient data structures and optimized rendering techniques.
+- **Challenge**: Issues with Bounding Box Constraints.
+  - **Solution**: I refined the bounding box logic by enforcing consistent clamping of particle positions and re-evaluating the conditions for boundary checks. Debug outputs were added to monitor particle positions, enabling quick identification and correction of boundary issues.
+
+- **Challenge**: Reuniting Particles After Avoiding the Facade.
+  - **Solution**: I implemented a "reorientation" mechanism to adjust particle trajectories after avoiding the facade. This recalibrated their velocity toward the target, ensuring a smooth return to their path and improving overall flow in the simulation.
 
 ---
 
