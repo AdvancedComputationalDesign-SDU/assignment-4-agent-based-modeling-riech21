@@ -12,161 +12,190 @@
 
 ## Pseudo-Code
 
-*(Provide detailed pseudo-code explaining the logic of your program. Outline your classes, their methods, and how they interact to produce the final model.)*
+1. **Class: `windparticle`**
+- Represents a single particle.
+- **Attributes**
+  - `position`: Current position of the particle.
+  - `velocity`: Current velocity vector.
+  - `interaction_range`: Distance within which the particle interacts with the facade.
+  - `attraction_strength`: Magnitude of attraction to the target point.
+  - `trail`: List storing the particle's path.
+- **Methods**
+  - `move()`
+    - Update `position` by adding `velocity`.
+    - Append the updated `position` to the `trail`.
+    - Ensure `velocity.X` remains positive.
+  - `interact(facade)`
+    - Find the closest point on the facade to the particle.
+    - If within `interaction_range`, adjust `position` to push away from the facade.
+    - Update `velocity` to smooth movement around the facade.
+  - `attract_to_target(target)`
+    - Calculate direction to the `target` point.
+    - Adjust `velocity` to balance current direction and attraction.
+    - Ensure `velocity.X` remains positive.
+  - `get_trail_curve()`
+    - Return `trail` as a curve object.
+2. **Class: `Facade`**
+- Represents a rectangular obstacle.
+- **Attributes**
+  - `base_point`: Bottom-left corner of the facade.
+  - `width`, `height`: Dimensions of the facade.
+  - `geometry`: Geometric representation of the facade.
+- **Methods**
+  - `closest_point(point)`
+    - Calculate the closest point on the facade to the given `point`.
+3. **Class: `Environment`**
+- Simulates the interaction of particles within a bounded area.
+- **Attributes**
+  - `bounds`: Bounding box for the simulation.
+  - `facade`: A single `Facade` object.
+  - `particles`: List of `WindParticle` objects.
+  - `attraction_target`: Target point for particle attraction.
+- **Methods**
+  - `generate_particles(num_particles)`
+    - Create `num_particles` with random positions and uniform velocities.
+    - Return the list of particles.
+  - `update()`
+    - For each particle
+      - Call `move()`.
+      - Call `interact(facade)`.
+      - Call `attract_to_target(attraction_target)`.
+      - Clamp the particle's position within `bounds`.
+  - `clamp_particle_position(particle)`
+    - Restrict the particle’s position to stay within the `bounds`.
 
-### Example Structure:
-
-1. **Main Simulation Loop**
-
-   - **Initialize Agents**:
-     - Create instances of the Agent class with initial positions and velocities.
-   - **Simulation Steps**:
-     - For each time step:
-       - **Agent Interactions**:
-         - Agents interact with other agents and the environment.
-       - **Agent Movement**:
-         - Agents update their positions based on their velocities.
-       - **Agent State Updates**:
-         - Agents update any internal states or attributes.
-       - **Data Collection**:
-         - Record agent positions or other relevant data for visualization.
-
-2. **Agent Class**
-
-   - **Attributes**:
-     - position: The agent's position in space.
-     - velocity: The agent's velocity vector.
-     - Other attributes as needed (e.g., state, neighbors).
-
-   - **Methods**:
-     - **move()**:
-       - Updates the agent's position based on its velocity and other factors.
-     - **interact(agents)**:
-       - Defines how the agent interacts with other agents.
-       - May include calculating forces, changing direction, or altering state.
-     - **update()**:
-       - Updates the agent's internal state after interactions and movement.
-
-3. **Additional Classes** (if applicable)
-
-   - **Environment**:
-     - Represents the simulation environment.
-     - May include methods for adding obstacles or boundaries.
-   - **Obstacle**:
-     - Represents obstacles in the environment that agents interact with.
+**Initialization and Execution**
+1. **Environment Setup**
+- Define `bounding_box` to set simulation limits.
+- Initialize a `Facade` object with specific dimensions.
+- Initialize the `Environment` with
+  - `bounding_box`.
+  - Specified `num_particles`.
+2. **Simulation Update Loop**
+- Call `env.update()` to
+  - Move particles.
+  - Handle interactions with the facade.
+  - Attract particles to the target point.
+3. **Outputs**
+- Particle positions.
+- Facade geometry.
+- Bounding box.
+- Target point.
+- Particle trails as curves.
 
 ---
 
 ## Technical Explanation
 
-*(Provide a concise explanation of your code, focusing on how you implemented OOP principles and agent-based modeling. Discuss how your approach generates the final structural patterns and the mathematical or computational principles involved.)*
+**Object-Oriented Design** The simulation is structured using three main classes: `WindParticle`, `Facade`, and `Environment`.
 
-### Topics to Cover:
+The `WindParticle` class models individual particles, encapsulating attributes such as position, velocity, interaction range, and attraction strength. Each particle manages its own behavior through methods for movement, obstacle interaction, and target attraction.
 
-- **Object-Oriented Design**
+The `Facade` class represents a rectangular obstacle, encapsulating geometric properties and methods to find the closest point to a given particle, essential for managing spatial relationships.
 
-  - Explain the classes you designed and why.
-  - Discuss how you applied OOP principles like encapsulation, inheritance, and polymorphism.
-  - Describe how the classes interact within the simulation.
+The `Environment` class oversees the simulation, defining the bounding area, generating particles, and updating their states. It coordinates interactions between particles and the facade while enforcing constraints to keep particles within defined bounds.
 
-- **Agent Behaviors and Interactions**
+Key OOP principles include encapsulation, as each class encapsulates specific responsibilities, and interaction through well-defined interfaces, such as the `WindParticle` class calling the `Facade.closest_point()` method for interactions.
 
-  - Describe the rules governing agent behaviors.
-  - Explain how agents interact with each other and the environment.
-  - Discuss any algorithms or decision-making processes implemented.
+**Agent Behaviors and Interactions** Agent behaviors are governed by rules that dictate how particles move and interact with the environment. Each particle moves according to its velocity and adjusts its position when near the facade to avoid collisions. Additionally, particles are attracted to a predefined target point, using directional vectors to guide their movement.
 
-- **Simulation Loop**
+When approaching the facade, particles detect proximity using geometric calculations to find the closest point and apply a repulsive force to avoid crossing the boundary. Simultaneously, they calculate direction vectors toward the target and adjust their velocities accordingly.
 
-  - Explain how the simulation evolves over time.
-  - Describe how time-stepping or iteration is handled.
-  - Discuss any performance considerations.
+The decision-making processes include collision avoidance and target attraction, where particles’ velocities gradually align with the target direction through vector normalization and scaling.
 
-- **Visualization**
+**Simulation Loop** The simulation evolves through iterative updates, with each iteration calling the `update()` method in the `Environment` class to manage all particles. Each particle calls its movement, interaction, and attraction methods to simulate dynamic behavior.
 
-  - Explain how the agent data is used to generate the final models.
-  - Discuss any visualization techniques or tools used.
+Time-stepping is achieved by repeatedly invoking the `update()` method, allowing the simulation to progress frame by frame. Performance considerations ensure efficiency by limiting interactions to only necessary calculations, with a fixed number of particles and simple geometric operations.
+
+**Visualization** The data generated by the agents is visualized through trails, which are stored as series of points and converted into curves. The geometry of the facade and particle positions are also output for real-time display.
+
+A trigger mechanism is employed to initiate the simulation, allowing for controlled visualization of particle dynamics. Visualization techniques utilize Rhino.Geometry to represent the 3D positions of particles, facade, and trails. Final outputs include particle positions, facade geometry, bounding box dimensions, the target point for attraction, and particle trails.
 
 ---
 
 ## Design Variations
 
-*(Include images and descriptions of your generated design variations. For each variation, discuss the parameters or rules changed and the impact on the resulting patterns.)*
+### Circular Facade Surface
 
-### Variation Examples
+1. **Variation 1**
 
-1. **Variation 1: [Name/Description]**
-
-   ![Variation 1](images/variation1.jpg)
+   ![Variation 1](images/Circular100.gif)
 
    - **Parameters Changed**:
-     - interaction_radius: [Value]
-     - alignment_strength: [Value]
-   - **Description**:
-     - Describe how these changes affected agent behaviors and the final pattern.
+     - num_particles: [100]
+     - facade shape: circular
 
-2. **Variation 2: [Name/Description]**
+2. **Variation 2**
 
-   ![Variation 2](images/variation2.jpg)
+   ![Variation 2](images/Circular10.gif)
 
    - **Parameters Changed**:
-     - cohesion_factor: [Value]
-     - separation_distance: [Value]
+     - num_particles: [10]
+     - facade shape: circular
+
+
    - **Description**:
-     - Discuss the observed changes in the model.
+     - The airflow adapts smoothly around the circular shape, showcasing realistic aerodynamics.
+     - Streamlines are consistent, demonstrating minimal turbulence behind the object.
+     - Useful for understanding flow around symmetric, streamlined objects such as cylinders.
+     - Does not simulate flow interaction with sharp corners or complex geometries.
+     - Turbulence effects appear understated, which may not accurately represent high-speed wind conditions.
 
-3. **Variation 3: [Name/Description]**
+### Rectangular Facade Surface
 
-   ![Variation 3](images/variation3.jpg)
+1. **Variation 1**
+
+   ![Variation 3](images/Rectangular100.gif)
 
    - **Parameters Changed**:
-     - randomness: [Value]
-     - environmental_influence: [Value]
-   - **Description**:
-     - Explain how the introduction of randomness or environmental factors impacted the results.
+     - num_particles: [100]
+     - facade shape: rectangular
 
-*(Add more variations as needed.)*
+2. **Variation 2**
+
+   ![Variation 4](images/Rectangular10.gif)
+
+   - **Parameters Changed**:
+     - num_particles: [10]
+     - facade shape: rectangular
+
+    
+   - **Description**:
+     - Clearly demonstrates how sharp edges influence airflow, creating distinct separation points.
+     - More realistic for modeling flow around buildings or sharp-edged objects.
+     - Turbulence is localized and might lack details about how eddies develop downstream
+     - The airflow around the facade exhibits asymmetrical behavior.
 
 ---
 
 ## Challenges and Solutions
 
-*(Discuss any challenges you faced during the assignment and how you overcame them.)*
+- **Challenge**: Balancing Avoidance and Attraction. 
+  - **Solution**: I fine-tuned the attraction and repulsion forces to balance navigation around the facade while progressing toward the target. A blended force algorithm based on distance and velocity allowed particles to dynamically adapt without getting stuck.
 
-### Examples:
+- **Challenge**: Agents getting stuck or clustering unnaturally.
+  - **Solution**: I implemented a mechanism that modified particle velocities when they were too close to the facade, allowing them to move away more effectively. Additionally, I introduced a random perturbation factor in their movement to encourage exploration and reduce clustering.
 
-- **Challenge 1**: Managing large numbers of agents efficiently.
-  - **Solution**: Implemented spatial partitioning to reduce computation time.
+- **Challenge**: Visualizing the simulation in real-time.
+  - **Solution**: I used spatial partitioning to reduce calculations for particle-facade interactions, enhancing simulation responsiveness. Optimizing the rendering pipeline ensured only essential elements were drawn, improving real-time visualization.
 
-- **Challenge 2**: Agents getting stuck or clustering unnaturally.
-  - **Solution**: Adjusted interaction rules and added collision avoidance behaviors.
+- **Challenge**: Handling Edge Cases in Particle Movement.
+  - **Solution**: I added boundary clamping logic in the `clamp_particle_position()` method to keep particles within bounds, ensuring smoother movement and reducing erratic behavior.
 
-- **Challenge 3**: Visualizing the simulation in real-time.
-  - **Solution**: Used efficient data structures and optimized rendering techniques.
+- **Challenge**: Issues with Bounding Box Constraints.
+  - **Solution**: I refined the bounding box logic by enforcing consistent clamping of particle positions and re-evaluating the conditions for boundary checks. Debug outputs were added to monitor particle positions, enabling quick identification and correction of boundary issues.
+
+- **Challenge**: Reuniting Particles After Avoiding the Facade.
+  - **Solution**: I implemented a "reorientation" mechanism to adjust particle trajectories after avoiding the facade. This recalibrated their velocity toward the target, ensuring a smooth return to their path and improving overall flow in the simulation.
 
 ---
 
 ## References
 
-*(List any resources you used or found helpful during the assignment.)*
-
-- **Object-Oriented Programming**
-
-  - [Python Official Documentation](https://docs.python.org/3/tutorial/classes.html)
-  - [Real Python - OOP in Python](https://realpython.com/python3-object-oriented-programming/)
-
-- **Agent-Based Modeling**
-
-  - [Mesa: Agent-Based Modeling in Python](https://mesa.readthedocs.io/en/master/)
-  - [Agent-Based Models in Architecture](https://www.researchgate.net/publication/279218265_Agent-based_models_in_architecture_new_possibilities_of_interscalar_design)
-
-- **Visualization Tools**
-
-  - [Rhino.Python Guides](https://developer.rhino3d.com/guides/rhinopython/)
-  - [matplotlib](https://matplotlib.org/)
-  - [Blender Python API](https://docs.blender.org/api/current/)
-
----
-
-*(Feel free to expand upon these sections to fully capture your work and learning process.)*
+- Agent-based modeling: [Agents in Python](https://agentpy.readthedocs.io/en/latest/overview.html#environments)
+- Grasshopper scripting: [Grasshopper scripting](https://developer.rhino3d.com/guides/scripting/scripting-gh-python/)
+- Object-Oriented Programming: [OOP in Python](https://realpython.com/python3-object-oriented-programming/)
+- Data trees and Python: [Grasshopper data trees and Python](https://developer.rhino3d.com/guides/rhinopython/grasshopper-datatrees-and-python/)
+- Running a simulation: [Model simulation](https://agentpy.readthedocs.io/en/latest/overview.html#running-a-simulation)
 
 ---
