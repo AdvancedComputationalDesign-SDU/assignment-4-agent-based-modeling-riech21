@@ -12,48 +12,76 @@
 
 ## Pseudo-Code
 
-*(Provide detailed pseudo-code explaining the logic of your program. Outline your classes, their methods, and how they interact to produce the final model.)*
+1. **Class: `windparticle`**
+- Represents a single particle.
+- **Attributes**
+  - `position`: Current position of the particle.
+  - `velocity`: Current velocity vector.
+  - `interaction_range`: Distance within which the particle interacts with the facade.
+  - `attraction_strength`: Magnitude of attraction to the target point.
+  - `trail`: List storing the particle's path.
+- **Methods**
+  - `move()`
+    - Update `position` by adding `velocity`.
+    - Append the updated `position` to the `trail`.
+    - Ensure `velocity.X` remains positive.
+  - `interact(facade)`
+    - Find the closest point on the facade to the particle.
+    - If within `interaction_range`, adjust `position` to push away from the facade.
+    - Update `velocity` to smooth movement around the facade.
+  - `attract_to_target(target)`
+    - Calculate direction to the `target` point.
+    - Adjust `velocity` to balance current direction and attraction.
+    - Ensure `velocity.X` remains positive.
+  - `get_trail_curve()`
+    - Return `trail` as a curve object.
+2. **Class: `Facade`**
+- Represents a rectangular obstacle.
+- **Attributes**
+  - `base_point`: Bottom-left corner of the facade.
+  - `width`, `height`: Dimensions of the facade.
+  - `geometry`: Geometric representation of the facade.
+- **Methods**
+  - `closest_point(point)`
+    - Calculate the closest point on the facade to the given `point`.
+3. **Class: `Environment`**
+- Simulates the interaction of particles within a bounded area.
+- **Attributes**
+  - `bounds`: Bounding box for the simulation.
+  - `facade`: A single `Facade` object.
+  - `particles`: List of `WindParticle` objects.
+  - `attraction_target`: Target point for particle attraction.
+- **Methods**
+  - `generate_particles(num_particles)`
+    - Create `num_particles` with random positions and uniform velocities.
+    - Return the list of particles.
+  - `update()`
+    - For each particle
+      - Call `move()`.
+      - Call `interact(facade)`.
+      - Call `attract_to_target(attraction_target)`.
+      - Clamp the particle's position within `bounds`.
+  - `clamp_particle_position(particle)`
+    - Restrict the particle’s position to stay within the `bounds`.
 
-### Example Structure:
-
-1. **Main Simulation Loop**
-
-   - **Initialize Agents**:
-     - Create instances of the Agent class with initial positions and velocities.
-   - **Simulation Steps**:
-     - For each time step:
-       - **Agent Interactions**:
-         - Agents interact with other agents and the environment.
-       - **Agent Movement**:
-         - Agents update their positions based on their velocities.
-       - **Agent State Updates**:
-         - Agents update any internal states or attributes.
-       - **Data Collection**:
-         - Record agent positions or other relevant data for visualization.
-
-2. **Agent Class**
-
-   - **Attributes**:
-     - position: The agent's position in space.
-     - velocity: The agent's velocity vector.
-     - Other attributes as needed (e.g., state, neighbors).
-
-   - **Methods**:
-     - **move()**:
-       - Updates the agent's position based on its velocity and other factors.
-     - **interact(agents)**:
-       - Defines how the agent interacts with other agents.
-       - May include calculating forces, changing direction, or altering state.
-     - **update()**:
-       - Updates the agent's internal state after interactions and movement.
-
-3. **Additional Classes** (if applicable)
-
-   - **Environment**:
-     - Represents the simulation environment.
-     - May include methods for adding obstacles or boundaries.
-   - **Obstacle**:
-     - Represents obstacles in the environment that agents interact with.
+**Initialization and Execution**
+1. **Environment Setup**
+- Define `bounding_box` to set simulation limits.
+- Initialize a `Facade` object with specific dimensions.
+- Initialize the `Environment` with
+  - `bounding_box`.
+  - Specified `num_particles`.
+2. **Simulation Update Loop**
+- Call `env.update()` to
+  - Move particles.
+  - Handle interactions with the facade.
+  - Attract particles to the target point.
+3. **Outputs**
+- Particle positions.
+- Facade geometry.
+- Bounding box.
+- Target point.
+- Particle trails as curves.
 
 ---
 
